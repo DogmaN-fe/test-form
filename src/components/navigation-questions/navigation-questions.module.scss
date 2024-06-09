@@ -1,0 +1,30 @@
+.navigation_questions {
+  margin-bottom: 20px;
+  &__question {
+    display: inline-block;
+    width: 40px;
+    margin: 0 5px 0 0;
+    &__curr {
+      height: 10px;
+      background-color: #ff0000;
+      animation: growHeight 0.5s ease-in-out forwards;
+    }
+    &__done {
+      height: 5px;
+      background-color: #000000;
+    }
+    &__next {
+      height: 5px;
+      background-color: #737373;
+    }
+  }
+}
+
+@keyframes growHeight {
+  from {
+    height: 0;
+  }
+  to {
+    height: 10px;
+  }
+}

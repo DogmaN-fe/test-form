@@ -1,24 +1,92 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useCallback, useEffect, useState } from "react";
+import styles from "./App.module.scss";
+import QuestionBlock from "./components/question-block/question-block";
+import { IQuestion } from "./utils/types";
+import NavigationQuestions from "./components/navigation-questions/navigation-questions";
+import { AppDispatch, useAppSelector } from "./utils/redux/store";
+import FormForNewQuestion from "./components/form-for-new-question/form-for-new-question";
+import { useDispatch } from "react-redux";
+import { loadQuestionFromLocalStorage } from "./utils/redux/features/questions-slice";
 
 function App() {
+  const questions: IQuestion[] = useAppSelector(
+    (state) => state.questionsSlice.loadedQuestions
+  );
+
+  const [index, setIndex] = useState<number>(0); // Номер вопроса
+  const [question, setQuestion] = useState<IQuestion>(questions[index]); // Вопрос
+  const [sendForm, setSendForm] = useState<boolean>(false); // Переменная смены функции
+
+  const dispatch = useDispatch<AppDispatch>();
+  const load = useCallback(
+    (newQuestions: IQuestion[]) =>
+      dispatch(loadQuestionFromLocalStorage(newQuestions)),
+    [dispatch]
+  );
+
+  // Функция смены вопроса
+  const handleNextQuestion = (): void => {
+    setIndex((prevIndex) => {
+      // Меняем индекс вопроса
+      const newIndex = prevIndex + 1;
+      // Меняем вопрос
+      setQuestion(questions[newIndex]);
+      // Если следующий поврос последний, то меняем текст и функцию input'a с type равным button
+      newIndex === questions.length - 1
+        ? setSendForm(true)
+        : setSendForm(false);
+      return newIndex;
+    });
+  };
+
+  // Функция отправки теста пользователя
+  const handleSendTest = () => {
+    alert("Тест завершен и отправлен");
+
+    // Сбрасываем все данные
+    setIndex(0);
+    setQuestion(questions[0]);
+    setSendForm(false);
+    // Получаем значение, которое хотим оставить
+    const valueToKeep = localStorage.getItem("Question");
+
+    // Удаляем все данные из LocalStorage
+    localStorage.clear();
+    if (valueToKeep !== null) {
+      // Записываем обратно значение, которое хотим оставить
+      localStorage.setItem("Question", valueToKeep);
+    }
+  };
+
+  useEffect(() => {
+    // Загружаем вопросы из LocalStorage
+    const local = localStorage.getItem("Question");
+    // Если вопросы есть, то меняем вопросы с обычных на новые
+    if (local) {
+      const parseLocal: IQuestion[] = JSON.parse(local);
+      load(parseLocal);
+    }
+  }, [load]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.App}>
+      <section className={styles.App__section}>
+        <h1 className={styles.App__section__title}>Тестирование</h1>
+        <NavigationQuestions
+          questionsCount={questions.length}
+          currentQuestion={index}
+        />
+        <form action="" className={styles.App__section__form_test}>
+          <QuestionBlock {...question} />
+          <input
+            className={styles.App__section__form_test__button}
+            type="button"
+            value={sendForm ? "Завершить" : "Следующий"}
+            onClick={sendForm ? handleSendTest : handleNextQuestion}
+          />
+        </form>
+        <FormForNewQuestion />
+      </section>
     </div>
   );
 }
