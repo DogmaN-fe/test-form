@@ -26,6 +26,7 @@ export default function QuestionBlock({
     }
   }, [question]);
 
+  // Функция обрабатывает изменеия ответа
   const handleAnswerChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
@@ -42,12 +43,8 @@ export default function QuestionBlock({
           newAnswer = newAnswer.filter((answer) => answer !== value);
         }
         break;
-      case "radio":
-        // Для radio кнопок всегда будет только один ответ
-        newAnswer = [value];
-        break;
       default:
-        // Для текстовых полей просто сохраняем значение
+        // Для остольных типов полей просто сохраняем значение
         newAnswer = [value];
         break;
     }

@@ -16,7 +16,7 @@ export const questionsSlice = createSlice({
         `${JSON.stringify(state.loadedQuestions)}`
       );
     },
-    // Редюсер меняет вопросы по умолчанию на собственные
+    // Редюсер меняет вопросы по умолчанию на пользовательские
     loadQuestionFromLocalStorage: (
       state,
       action: PayloadAction<IQuestion[]>

@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import styles from "./App.module.scss";
-import QuestionBlock from "./components/question-block/question-block";
-import { IQuestion } from "./utils/types";
-import NavigationQuestions from "./components/navigation-questions/navigation-questions";
-import { AppDispatch, useAppSelector } from "./utils/redux/store";
-import FormForNewQuestion from "./components/form-for-new-question/form-for-new-question";
 import { useDispatch } from "react-redux";
+import { IQuestion } from "./utils/types";
+import QuestionBlock from "./components/question-block/question-block";
+import NavigationQuestions from "./components/navigation-questions/navigation-questions";
+import FormForNewQuestion from "./components/form-for-new-question/form-for-new-question";
+import { AppDispatch, useAppSelector } from "./utils/redux/store";
 import { loadQuestionFromLocalStorage } from "./utils/redux/features/questions-slice";
+import styles from "./App.module.scss";
 
 function App() {
   const questions: IQuestion[] = useAppSelector(
@@ -18,6 +18,7 @@ function App() {
   const [sendForm, setSendForm] = useState<boolean>(false); // Переменная смены функции
 
   const dispatch = useDispatch<AppDispatch>();
+  // Загрузка пользовательских вопросов
   const load = useCallback(
     (newQuestions: IQuestion[]) =>
       dispatch(loadQuestionFromLocalStorage(newQuestions)),
