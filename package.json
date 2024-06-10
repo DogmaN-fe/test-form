@@ -1,6 +1,7 @@
 {
   "name": "test-form",
   "version": "0.1.0",
+  "homepage": "https://DogmaN-fe.github.io/test-form",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
@@ -19,6 +20,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -43,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^6.1.1",
     "sass": "^1.77.4"
   }
 }
