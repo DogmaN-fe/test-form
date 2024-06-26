@@ -4,3 +4,9 @@ export interface IQuestion {
   answers?: string[];
   maxLength?: number;
 }
+
+export interface IFormNewQuestionData {
+  question: string;
+  answers: string[];
+  typeQuestion: string;
+}

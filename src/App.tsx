@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { IQuestion } from "./utils/types";
-import QuestionBlock from "./components/question-block/question-block";
-import NavigationQuestions from "./components/navigation-questions/navigation-questions";
-import FormForNewQuestion from "./components/form-for-new-question/form-for-new-question";
+import QuestionBlock from "./components/QuestionBlock/QuestionBlock";
+import NavigationQuestions from "./components/NavigationQuestions/NavigationQuestions";
+import FormForNewQuestion from "./components/FormForNewQuestion/FormForNewQuestion";
 import { AppDispatch, useAppSelector } from "./utils/redux/store";
-import { loadQuestionFromLocalStorage } from "./utils/redux/features/questions-slice";
+import { loadQuestionFromLocalStorage } from "./utils/redux/features/questionsSlice";
 import styles from "./App.module.scss";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
   );
 
   // Функция смены вопроса
-  const handleNextQuestion = (): void => {
+  const handleNextQuestion = useCallback((): void => {
     setIndex((prevIndex) => {
       // Меняем индекс вопроса
       const newIndex = prevIndex + 1;
@@ -38,10 +38,10 @@ function App() {
         : setSendForm(false);
       return newIndex;
     });
-  };
+  }, [questions]);
 
   // Функция отправки теста пользователя
-  const handleSendTest = () => {
+  const handleSendTest = useCallback(() => {
     alert("Тест завершен и отправлен");
 
     // Сбрасываем все данные
@@ -57,7 +57,7 @@ function App() {
       // Записываем обратно значение, которое хотим оставить
       localStorage.setItem("Question", valueToKeep);
     }
-  };
+  }, [questions]);
 
   useEffect(() => {
     // Загружаем вопросы из LocalStorage

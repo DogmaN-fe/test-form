@@ -1,5 +1,5 @@
 import { ChangeEventHandler, ReactElement } from "react";
-import styles from "./select-type-question.module.scss";
+import styles from "./SelectTypeQuestion.module.scss";
 
 const SelectTypeOfQuestion = ({
   typeQuestion,

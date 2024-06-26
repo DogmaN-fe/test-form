@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
-import questionsSlice from "./features/questions-slice";
+import questionsSlice from "./features/questionsSlice";
 
 export const store = configureStore({
     reducer: {

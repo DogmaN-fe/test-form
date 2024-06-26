@@ -1,5 +1,5 @@
-import { ReactElement, useEffect, useState } from "react";
-import styles from "./question-block.module.scss";
+import { ReactElement, useCallback, useEffect, useState } from "react";
+import styles from "./QuestionBlock.module.scss";
 
 export default function QuestionBlock({
   question,
@@ -18,7 +18,6 @@ export default function QuestionBlock({
     // Получаем данные ответов из LocalStorage
     const savedAnswer = localStorage.getItem(question);
     if (savedAnswer) {
-      // Парсим сохраненный ответ, так как он хранится в виде строки
       setUserAnswer(JSON.parse(savedAnswer));
     } else {
       // Если ответа пользователя на вопрос нет, очищаем userAnswer от предыдущего ответа
@@ -27,7 +26,7 @@ export default function QuestionBlock({
   }, [question]);
 
   // Функция обрабатывает изменеия ответа
-  const handleAnswerChange = (
+  const handleAnswerChange = useCallback((
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     const { value, checked } = event.target;
@@ -52,7 +51,7 @@ export default function QuestionBlock({
     setUserAnswer(newAnswer);
     // Сохраняем в localStorage в виде строки
     localStorage.setItem(question, JSON.stringify(newAnswer));
-  };
+  }, [question, type, userAnswer]);
 
   return (
     <label key={question} className={styles.question_block}>
